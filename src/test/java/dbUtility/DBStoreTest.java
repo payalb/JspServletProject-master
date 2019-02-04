@@ -1,30 +1,46 @@
 package dbUtility;
 
-import static org.powermock.api.mockito.PowerMockito.when;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
-import java.io.IOException;
+import java.sql.SQLException;
 import java.util.Properties;
 
+import org.apache.tomcat.dbcp.dbcp2.BasicDataSource;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
 import com.exception.DatabaseException;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({PropertyReader.class,DBStore.class}) //whatever class we are mocking
-@PowerMockIgnore("javax.management.*")
 public class DBStoreTest {
 
+	@Test(expected=DatabaseException.class)
+	public void testGetDataSourcePropertyEmpty() throws DatabaseException, SQLException {
+		DBStore.property= new Properties();
+		DBStore.getDataSource();
+		
+	}
+
+	@Test(expected=DatabaseException.class)
+	public void testGetDataSourcePropertyNull() throws DatabaseException, SQLException {
+		DBStore.property= null;
+		DBStore.getDataSource();
+		
+	}
+	
 	@Test
-public void test() throws IOException, DatabaseException {
-	PowerMockito.mockStatic(PropertyReader.class);
-	Properties p = new Properties();
-	p.load(DBStoreTest.class.getResourceAsStream("/db_test.properties"));
-	when(PropertyReader.readPropertyFile()).thenReturn(p);
-	DBStore.getDataSource();
-}
+	public void testDsPrpertyFileValid() throws DatabaseException, SQLException {
+		DBStore.property= PropertyReader.readPropertyFile();
+		BasicDataSource ds=DBStore.getDataSource();
+		/*if(ds.getConnection()==null) {
+			throw new AssertionError
+		}*/
+		assertNotNull("Datasource should not be null",ds);
+		assertNotNull(ds.getConnection());
+		assertEquals(200,ds.getMaxTotal());
+		assertFalse(ds.getEnableAutoCommitOnReturn());
+		
+	}
+	
+	
 }

@@ -23,10 +23,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import com.exception.DatabaseException;
 
 import dao.PassangerDao;
-import dao.UserDao;
+import dao.UserDaoTest;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({UserDao.class, PassangerDao.class ,ValidateUser.class})
+@PrepareForTest({UserDaoTest.class, PassangerDao.class ,ValidateUser.class})
 @PowerMockIgnore("javax.management.*")
 public class ValidateUserTest {
 	
@@ -40,8 +40,8 @@ public class ValidateUserTest {
 	
 	@Test
 	public void test1() throws IOException, ServletException, DatabaseException {
-		PowerMockito.mockStatic(UserDao.class);
-		when(UserDao.selectUser(anyString(), anyString(), anyString())).thenReturn(null);
+		PowerMockito.mockStatic(UserDaoTest.class);
+		when(UserDaoTest.selectUser(anyString(), anyString(), anyString())).thenReturn(null);
 		PowerMockito.mockStatic(PassangerDao.class);
 		when(PassangerDao.getPassanger(anyString())).thenReturn(null);
 		Mockito.when(request.getRequestDispatcher("/login.jsp")).thenReturn(dispatcher);

@@ -12,7 +12,7 @@ import dbUtility.DBStore;
 
 public class UserDao {
 
-	public static int insertUser(User u) throws DatabaseException {
+	public  int insertUser(User u) throws DatabaseException {
 		int ret = 0;
 		String insertIntoUser = "INSERT INTO User(username, password, usertype) " + "VALUES (?,?,?);";
 		try (Connection conn = DBStore.getDataSource().getConnection();

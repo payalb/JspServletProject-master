@@ -14,7 +14,7 @@ import com.bean.User;
 import com.exception.DatabaseException;
 
 import dao.PassangerDao;
-import dao.UserDao;
+import dao.UserDaoTest;
 
 @WebServlet(value="/registerUser", asyncSupported=true)
 public class RegisterUser extends HttpServlet {
@@ -51,7 +51,7 @@ public class RegisterUser extends HttpServlet {
 		ctx.start(()->{
 			try {
 				System.out.println(Thread.currentThread().getName());
-				UserDao.insertUser(user);
+				UserDaoTest.insertUser(user);
 				PassangerDao.insertPassanger(p);
 			} catch (DatabaseException e) {
 				e.printStackTrace();

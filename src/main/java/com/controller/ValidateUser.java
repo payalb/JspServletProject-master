@@ -14,7 +14,7 @@ import com.bean.Passanger;
 import com.exception.DatabaseException;
 
 import dao.PassangerDao;
-import dao.UserDao;
+import dao.UserDaoTest;
 
 @WebServlet(value="/validate", asyncSupported=true)
 public class ValidateUser extends HttpServlet {
@@ -28,7 +28,7 @@ public class ValidateUser extends HttpServlet {
 
 		String user = null;
 		try {
-			user = UserDao.selectUser(uname, password, utype);
+			user = UserDaoTest.selectUser(uname, password, utype);
 			if (user != null) {
 			AsyncContext ctx=request.startAsync();
 			HttpSession session = request.getSession(true);
