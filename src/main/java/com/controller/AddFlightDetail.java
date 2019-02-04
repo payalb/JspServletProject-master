@@ -14,6 +14,7 @@ import javax.servlet.http.HttpSession;
 import com.bean.Flight;
 import com.bean.Seat;
 import com.exception.DatabaseException;
+import com.mysql.cj.util.StringUtils;
 
 import dao.FlightDao;
 import dao.SeatDao;
@@ -24,17 +25,23 @@ public class AddFlightDetail extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int ret = 0;
+		if(StringUtils.isNullOrEmpty(request.getParameter("fno")) || StringUtils.isNullOrEmpty(request.getParameter("air_id"))){
+			request.setAttribute("error", "Invalid flight details");
+			request.getRequestDispatcher("/Error.jsp").forward(request, response);
+		}
+		else {
 		int fno = Integer.parseInt(request.getParameter("fno"));
 		String a_time = request.getParameter("atime");
 		String a_date = request.getParameter("adate");
 		String d_time = request.getParameter("dtime");
 		String d_date = request.getParameter("ddate");
+		
 		int air_id = Integer.parseInt(request.getParameter("air_id"));
 		String d_city = request.getParameter("d_city");
 		String a_city = request.getParameter("a_city");
-		int eseat = Integer.parseInt(request.getParameter("eseat"));
-		int fseat = Integer.parseInt(request.getParameter("fseat"));
-		int bseat = Integer.parseInt(request.getParameter("bseat"));
+		int eseat = Integer.parseInt(request.getParameter("eseat")==null? 0+"" : request.getParameter("eseat"));
+		int fseat = Integer.parseInt(request.getParameter("fseat")==null? 0+"" : request.getParameter("fseat"));
+		int bseat = Integer.parseInt(request.getParameter("bseat")==null? 0+"" : request.getParameter("bseat"));
 		Date ddate = Date.valueOf(d_date);
 		Date adate = Date.valueOf(a_date);
 		Time dtime = Time.valueOf(d_time);
@@ -54,7 +61,7 @@ public class AddFlightDetail extends HttpServlet {
 			e.printStackTrace();
 			request.getRequestDispatcher("/Error.jsp").forward(request, response);
 		}
-
+		}
 	}
 
 }
